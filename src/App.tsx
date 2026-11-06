@@ -1345,6 +1345,7 @@ function Icon({ children }: { children: ReactNode }) {
 function App() {
   const [activeNav, setActiveNav] = useState("The stage");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileHudOpen, setMobileHudOpen] = useState(false);
   const [selectedZone, setSelectedZone] = useState(seatingBlockToZone(seatingBlocks[0]));
   const [activeNightId, setActiveNightId] = useState<NightId>("hanoi");
   const [cameraMode, setCameraMode] = useState<CameraMode>("front");
@@ -1922,7 +1923,7 @@ function App() {
   };
 
   return (
-    <main className={`app-shell ${activeNav === "The stage" ? "map-only" : "tab-mode"}`}>
+    <main className={`app-shell ${activeNav === "The stage" ? "map-only" : "tab-mode"} ${mobileHudOpen ? "mobile-hud-open" : "mobile-hud-closed"}`}>
       <div className="grain" />
       <div className="portrait-lock" role="dialog" aria-modal="true" aria-label="Xoay ngang màn hình để vào SKY TOUR">
         <div className="portrait-lock-card">
@@ -1933,6 +1934,9 @@ function App() {
           <small>LANDSCAPE MODE REQUIRED</small>
         </div>
       </div>
+      <button className="mobile-hud-toggle" type="button" onClick={() => setMobileHudOpen((value) => !value)} aria-expanded={mobileHudOpen} aria-controls="mobile-concert-ui">
+        {mobileHudOpen ? "THU GỌN UI" : "MỞ UI"}
+      </button>
       <a className="skip-link" href={activeNav === "The stage" ? "#concert" : "#tab-content"}>BỎ QUA ĐIỀU HƯỚNG</a>
       {concertNights.map((night) => {
         const track = night.tracks[nightTrackIndices[night.id] ?? 0];
@@ -2074,7 +2078,7 @@ function App() {
 
       <section className="concert-section section-pad" id="concert" aria-label="Bản đồ sân khấu 3D" tabIndex={-1}>
         <div className="section-heading concert-heading"><div><span className="section-kicker">SKY TOUR ONLINE / THE SKY ARENA</span><h2>The journey<br /><em>beyond the sky.</em></h2></div><div className="heading-aside"><span className="live-pill"><i /> LIVE PREVIEW</span><span>{activeNight.city} · {activeAct.title} · {activeAct.theme}</span><span>{cameraPresets[cameraMode].label} · Drag to rotate · Scroll to zoom</span></div></div>
-        <div className="reference-toolbar" role="region" aria-label="Điều khiển bản đồ sân khấu">
+        <div className="reference-toolbar" id="mobile-concert-ui" role="region" aria-label="Điều khiển bản đồ sân khấu">
           <span className="reference-title"><i /> SKY TOUR 3D MAP <small>INTERACTIVE FLOOR PLAN</small></span>
           <div className="reference-actions">
             <label className="reference-act"><span>ACT</span><select value={activeAct.id} onChange={(event) => selectAct(event.target.value as ActId)} aria-label="Chọn act"><option value="awakening">01 · AWAKENING</option><option value="golden">02 · GOLDEN ERA</option><option value="love">03 · LOVE STORY</option><option value="rebel">04 · REBEL</option><option value="ours">05 · SKY IS OURS</option><option value="encore">EN · WE ARE SKY</option></select></label>
