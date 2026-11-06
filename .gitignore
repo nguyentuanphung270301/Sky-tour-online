@@ -1,0 +1,11 @@
+node_modules/
+dist/
+asset-source/
+.drive-glTF.html
+.chrome-check/
+.chrome-check-2/
+.edge-check/
+docx-qa-*/
+.env
+.env.*
+!.env.example
